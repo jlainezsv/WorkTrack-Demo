@@ -1,0 +1,239 @@
+import {Controller, Get, Post, Patch, Body, Param, Query, Inject, HttpException, HttpStatus,} from "@nestjs/common";
+
+/* Use Cases */
+import { GetEmployees } from "../../../application/use-cases/GetEmployees";
+import { CreateEmployee } from "../../../application/use-cases/CreateEmployee";
+import { RegisterTimeEntry } from "../../../application/use-cases/RegisterTimeEntry";
+import { UpdateTimeEntryStatus } from "../../../application/use-cases/UpdateTimeEntryStatus";
+import { UpdateEmployee } from "../../../application/use-cases/UpdateEmployee";
+import { UpdateTimeEntry } from "../../../application/use-cases/UpdateTimeEntry";
+
+/* Repositories */
+import { EmployeeRepository } from "../../../application/repositories/EmployeeRepository";
+import { TimeEntryRepository } from "../../../application/repositories/TimeEntryRepository";
+
+/* Domain */
+import { Employee } from "../../../domain/entities/Employee";
+import { TimeEntry } from "../../../domain/entities/TimeEntry";
+
+/* DTOs */
+import { EmployeeResponseDto } from "./dto/employee.response.dto";
+import { TimeEntryResponseDto } from "./dto/time-entry.response.dto";
+
+@Controller("employees")
+export class EmployeesController {
+
+  private readonly getEmployees: GetEmployees;
+  private readonly createEmployee: CreateEmployee;
+  private readonly registerTimeEntry: RegisterTimeEntry;
+  private readonly updateEmployeeUseCase: UpdateEmployee;
+
+  constructor(
+    @Inject("EmployeeRepository")
+    private readonly employeeRepository: EmployeeRepository,
+
+    @Inject("TimeEntryRepository")
+    private readonly timeEntryRepository: TimeEntryRepository,
+
+    private readonly updateTimeEntryUseCase: UpdateTimeEntry,
+    private readonly updateTimeEntryStatusUseCase: UpdateTimeEntryStatus,
+  ) {
+    this.getEmployees = new GetEmployees(this.employeeRepository);
+
+    this.createEmployee = new CreateEmployee(
+      this.employeeRepository
+    );
+
+    this.registerTimeEntry = new RegisterTimeEntry(
+      this.employeeRepository,
+      this.timeEntryRepository
+    );
+
+    this.updateEmployeeUseCase = new UpdateEmployee(this.employeeRepository);
+  }
+
+  /*
+  ─────────────────────────────────────────
+  EMPLOYEE ROUTES
+  ─────────────────────────────────────────
+  */
+
+  @Get()
+  async getAll(
+    @Query("includeInactive") includeInactive?: string
+  ): Promise<EmployeeResponseDto[]> {
+
+    const employees = await this.getEmployees.execute({
+      includeInactive: includeInactive === "true",
+    });
+
+    return employees.map(this.toResponseDto);
+  }
+
+  @Get(":id")
+  async findById(
+    @Param("id") id: string
+  ): Promise<EmployeeResponseDto> {
+
+    const employee = await this.employeeRepository.findById(id);
+
+    if (!employee) {
+      throw new HttpException(
+        "Employee not found",
+        HttpStatus.NOT_FOUND
+      );
+    }
+
+    return this.toResponseDto(employee);
+  }
+
+  @Post()
+  async create(
+    @Body() body: { name: string; photoUrl?: string }
+  ): Promise<EmployeeResponseDto> {
+
+    const employee = await this.createEmployee.execute({
+      name: body.name,
+      photoUrl: body.photoUrl,
+    });
+
+    return this.toResponseDto(employee);
+  }
+
+  /*
+  ─────────────────────────────────────────
+  TIME ENTRY ROUTES
+  ─────────────────────────────────────────
+  */
+
+  @Get(":id/time-entries")
+  async getTimeEntriesByEmployee(
+    @Param("id") id: string
+  ): Promise<TimeEntryResponseDto[]> {
+
+    const employee = await this.employeeRepository.findById(id);
+
+    if (!employee) {
+      throw new HttpException(
+        "Employee not found",
+        HttpStatus.NOT_FOUND
+      );
+    }
+
+    const entries = await this.timeEntryRepository.findByEmployeeId(id);
+
+    return entries.map((entry) =>
+      this.toTimeEntryResponseDto(entry)
+    );
+  }
+  @Get("/time-entries/all")
+    async getAllTimeEntries(): Promise<TimeEntryResponseDto[]> {
+
+      const entries = await this.timeEntryRepository.findAll()
+
+      return entries.map((entry) =>
+        this.toTimeEntryResponseDto(entry)
+      )
+  }
+
+  @Post(":id/time-entries")
+  async registerTime(
+    @Param("id") id: string,
+    @Body() body: { date: string; startTime: string; endTime: string; hasLunch?: boolean; clientName: string; description?: string }
+  ): Promise<TimeEntryResponseDto> {
+    const result = await this.registerTimeEntry.execute({
+      employeeId: id,
+      date: body.date,
+      startTime: body.startTime,
+      endTime: body.endTime,
+      hasLunch: body.hasLunch,
+      clientName: body.clientName,
+      description: body.description,
+    });
+
+    return this.toTimeEntryResponseDto(result);
+  }
+
+  @Patch("time-entries/:id/status")
+  async updateTimeEntryStatus(
+    @Param("id") id: string,
+    @Body() body: { status: "paid" | "unpaid"; paidAt?: string }
+  ) {
+    return this.updateTimeEntryStatusUseCase.execute(
+      id,
+      body.status,
+      body.paidAt
+    );
+  }
+
+  @Patch("time-entries/:id")
+  async updateTimeEntry(
+    @Param("id") id: string,
+    @Body() body: { date: string; startTime: string; endTime: string; hasLunch?: boolean; description?: string }
+  ): Promise<TimeEntryResponseDto> {
+    await this.updateTimeEntryUseCase.execute({
+      id,
+      date: body.date,
+      startTime: body.startTime,
+      endTime: body.endTime,
+      hasLunch: body.hasLunch,
+      description: body.description,
+    });
+
+    const updated = await this.timeEntryRepository.findById(id);
+
+    if (!updated) {
+      throw new HttpException("Time entry not found", HttpStatus.NOT_FOUND);
+    }
+
+    return this.toTimeEntryResponseDto(updated);
+  }
+
+  @Patch(":id")
+    async updateEmployee(
+      @Param("id") id: string,
+      @Body() body: { name?: string; photoUrl?: string; status?: "active" | "inactive" }
+    ): Promise<EmployeeResponseDto> {
+      await this.updateEmployeeUseCase.execute({ id, ...body })
+      const employee = await this.employeeRepository.findById(id)
+      return this.toResponseDto(employee!)
+  }
+
+  /*
+  ─────────────────────────────────────────
+  DTO MAPPERS
+  ─────────────────────────────────────────
+  */
+
+  private toResponseDto(
+    employee: Employee
+  ): EmployeeResponseDto {
+
+    return {
+      id: employee.id,
+      employeeCode: employee.employeeCode,
+      name: employee.name,
+      active: employee.active,
+      status: employee.active ? "active" : "inactive",
+      createdAt: employee.createdAt.toISOString(),
+    };
+  }
+
+  private toTimeEntryResponseDto(
+    entry: TimeEntry
+  ): TimeEntryResponseDto {
+
+    return {
+      id: entry.id,
+      employeeId: entry.employeeId,
+      startTime: entry.startTime.toISOString(),
+      endTime: entry.endTime.toISOString(),
+      hasLunch: entry.hasLunch,
+      clientName: entry.clientName ?? undefined,
+      description: entry.description ?? undefined,
+      status: entry.status,
+      paidAt: entry.paidAt ?? undefined,
+      createdAt: entry.createdAt.toISOString(),
+    };
+  }
+}
