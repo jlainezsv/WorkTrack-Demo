@@ -46,7 +46,6 @@ export class DrizzleTimeEntryRepository implements TimeEntryRepository {
         employeeId: entry.employeeId,
         startTime: entry.startTime,
         endTime: entry.endTime,
-        hasLunch: entry.hasLunch,
         clientName: entry.clientName,
         description: entry.description,
         status: entry.status,
@@ -58,7 +57,6 @@ export class DrizzleTimeEntryRepository implements TimeEntryRepository {
         set: {
           startTime: entry.startTime,
           endTime: entry.endTime,
-          hasLunch: entry.hasLunch,
           clientName: entry.clientName,
           description: entry.description,
           status: entry.status,
@@ -77,7 +75,6 @@ export class DrizzleTimeEntryRepository implements TimeEntryRepository {
       .set({
         startTime: entry.startTime,
         endTime: entry.endTime,
-        hasLunch: entry.hasLunch,
         clientName: entry.clientName,
         description: entry.description,
         status: entry.status,
@@ -193,7 +190,6 @@ export class DrizzleTimeEntryRepository implements TimeEntryRepository {
       employeeId: row.employeeId,
       startTime: row.startTime,
       endTime: row.endTime,
-      hasLunch: row.hasLunch,
       clientName: row.clientName,
       description: row.description,
       status: row.status as "paid" | "unpaid",

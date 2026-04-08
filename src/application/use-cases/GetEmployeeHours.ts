@@ -38,15 +38,13 @@ export class GetEmployeeHours {
     let unpaidHours = 0
 
     for (const entry of entries) {
-      const workedHours = entry.getDurationInHours()
-      const payableHours = entry.getPaidDurationInHours()
-
-      totalHours += workedHours
+      const hours = entry.getDurationInHours()
+      totalHours += hours
 
       if (entry.status === "paid") {
-        paidHours += payableHours
+        paidHours += hours
       } else {
-        unpaidHours += payableHours
+        unpaidHours += hours
       }
     }
 

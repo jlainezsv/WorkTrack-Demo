@@ -14,7 +14,7 @@ export class TimeEntry {
     status: PaymentStatus = "unpaid",
     public readonly createdAt: Date = new Date(),
     paidAt?: string,
-    public readonly hasLunch: boolean = false,
+    
   ) {
     this.status = status
     this.paidAt = paidAt
@@ -30,11 +30,6 @@ export class TimeEntry {
   public getDurationInHours(): number {
     const diffInMs = this.endTime.getTime() - this.startTime.getTime()
     return diffInMs / (1000 * 60 * 60)
-  }
-
-  public getPaidDurationInHours(): number {
-    const lunchBreakInHours = this.hasLunch ? 0.5 : 0
-    return Math.max(0, this.getDurationInHours() - lunchBreakInHours)
   }
 
   public overlapsWith(other: TimeEntry): boolean {

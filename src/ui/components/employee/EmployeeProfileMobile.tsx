@@ -128,11 +128,6 @@ export function EmployeeProfileMobile({
                     </div>
 
                     <div className="flex justify-between border rounded-md px-3 py-2 text-sm">
-                      <span className="text-muted-foreground">Lunch Break</span>
-                      <span>{entry.hasLunch ? "Yes (-30m paid)" : "No"}</span>
-                    </div>
-
-                    <div className="flex justify-between border rounded-md px-3 py-2 text-sm">
                         <span className="text-muted-foreground">Start</span>
                         <span className="flex items-center gap-2">
                           {new Date(entry.startTime).toLocaleTimeString()}

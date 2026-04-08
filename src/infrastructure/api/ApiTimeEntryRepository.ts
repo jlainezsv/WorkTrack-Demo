@@ -32,7 +32,6 @@ export class ApiTimeEntryRepository implements TimeEntryRepository {
         date,
         startTime,
         endTime,
-        hasLunch: entry.hasLunch,
         clientName: entry.clientName,
         description: entry.description,
       }
@@ -52,7 +51,6 @@ export class ApiTimeEntryRepository implements TimeEntryRepository {
         date,
         startTime,
         endTime,
-        hasLunch: entry.hasLunch,
         description: entry.description,
       }
     )

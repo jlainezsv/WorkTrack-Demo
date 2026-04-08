@@ -14,7 +14,6 @@ export class TimeEntryMapper {
       dto.status,
       dto.createdAt ? new Date(dto.createdAt) : new Date(),
       dto.paidAt,
-      dto.hasLunch ?? false,
     )
   }
 
@@ -24,7 +23,6 @@ export class TimeEntryMapper {
       employeeId: entry.employeeId,
       startTime: entry.startTime.toISOString(),
       endTime: entry.endTime.toISOString(),
-      hasLunch: entry.hasLunch,
       clientName: entry.clientName,
       description: entry.description,
       createdAt: entry.createdAt.toISOString(),

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react"
 
 import { Client } from "@domain/entities/Client"
-import { EditClientDialog } from "@/ui/components/client/EditClientDialog"
+import { EditClientDialog } from "./EditClientDialog"
 import { Input } from "@/ui/components/ui/input"
 
 interface Props {

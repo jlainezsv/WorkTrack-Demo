@@ -36,13 +36,6 @@
       "when": 1773010000000,
       "tag": "0004_paid_at_time_entries",
       "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1774872000000,
-      "tag": "0005_has_lunch_time_entries",
-      "breakpoints": true
     }
   ]
 }

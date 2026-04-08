@@ -7,7 +7,6 @@ export interface RegisterTimeEntryInput {
   date: string       // "YYYY-MM-DD"
   startTime: string  // "HH:MM"
   endTime: string    // "HH:MM"
-    hasLunch?: boolean
   clientName?: string
   description?: string
 }
@@ -36,11 +35,7 @@ export class RegisterTimeEntry {
             startDateTime,
             endDateTime,
             input.clientName,
-            input.description,
-            "unpaid",
-            new Date(),
-            undefined,
-            input.hasLunch ?? false,
+            input.description
         )
 
         const existingEntries = await this.timeEntryRepository.findByEmployeeId(

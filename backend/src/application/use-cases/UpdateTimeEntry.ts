@@ -11,7 +11,6 @@ export interface UpdateTimeEntryInput {
   date: string       // "YYYY-MM-DD"
   startTime: string  // "HH:MM"
   endTime: string    // "HH:MM"
-    hasLunch?: boolean
   description?: string
 }
 
@@ -44,7 +43,6 @@ export class UpdateTimeEntry {
             employeeId: entryToUpdate.employeeId,
             startTime: startDateTime,
             endTime: endDateTime,
-            hasLunch: input.hasLunch ?? entryToUpdate.hasLunch,
             clientName: entryToUpdate.clientName,
             description: input.description ?? entryToUpdate.description,
             status: entryToUpdate.status,

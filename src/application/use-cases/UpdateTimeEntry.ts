@@ -6,7 +6,6 @@ export interface UpdateTimeEntryInput {
   date: string
   startTime: string
   endTime: string
-  hasLunch?: boolean
   description?: string
 }
 
@@ -43,7 +42,6 @@ export class UpdateTimeEntry {
       existing.status,
       existing.createdAt,
       existing.paidAt,
-      input.hasLunch ?? existing.hasLunch,
     )
 
     await this.repository.update(updated)

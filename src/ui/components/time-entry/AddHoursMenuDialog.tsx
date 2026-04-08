@@ -2,7 +2,7 @@ import { useState } from "react"
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/ui/components/ui/dialog"
 import { Button } from "@/ui/components/ui/button"
-import { TimeEntryForm } from "@/ui/components/time-entry/TimeEntryForm"
+import { TimeEntryForm } from "./TimeEntryForm"
 
 interface Props {
   variant?: "link" | "ghost" | "outline" | "default" | "secondary" | "destructive"

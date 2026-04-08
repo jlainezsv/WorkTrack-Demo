@@ -22,7 +22,6 @@ export function AddHours() {
   const [date, setDate] = useState("")
   const [startTime, setStartTime] = useState("")
   const [endTime, setEndTime] = useState("")
-  const [hasLunch, setHasLunch] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [employees, setEmployees] = useState<any[]>([])
@@ -57,7 +56,6 @@ export function AddHours() {
       date,
       startTime,
       endTime,
-      hasLunch,
       clientName: clientName || undefined,
       description: description || undefined
     })
@@ -67,7 +65,6 @@ export function AddHours() {
       setDate("")
       setStartTime("")
       setEndTime("")
-      setHasLunch(false)
       setClientName("")
       setDescription("")
     } catch (err: any) {
@@ -128,19 +125,6 @@ export function AddHours() {
               value={endTime}
               onChange={(e) => setEndTime(e.target.value)}
               required
-            />
-          </Field>
-        </div>
-
-        <div className="my-6">
-          <Field>
-            <FieldLabel htmlFor="has-lunch">Apply Lunch Break</FieldLabel>
-            <input
-              id="has-lunch"
-              type="checkbox"
-              checked={hasLunch}
-              onChange={(e) => setHasLunch(e.target.checked)}
-              className="h-4 w-4"
             />
           </Field>
         </div>

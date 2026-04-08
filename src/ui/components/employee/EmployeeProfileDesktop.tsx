@@ -115,11 +115,6 @@ export function EmployeeProfileDesktop({
                         +1 Day
                       </Badge>
                     )}
-                  {entry.hasLunch && (
-                    <Badge variant="secondary" className="text-nowrap ml-2">
-                      Lunch -30m
-                    </Badge>
-                  )}
                 </TableCell>
                 <TableCell className="text-center">
                   {entry.getDurationInHours().toFixed(1)}

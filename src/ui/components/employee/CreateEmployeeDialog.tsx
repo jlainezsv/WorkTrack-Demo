@@ -46,10 +46,7 @@ export function CreateEmployeeDialog({ onCreated }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <span className="sm:hidden">SM</span>
-          <span className="hidden sm:inline">Create Employeeeeeee</span>
-        </Button>
+        <Button>Create Employee</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

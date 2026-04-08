@@ -3,7 +3,6 @@ export interface TimeEntryDTO {
   employeeId: string
   startTime: string
   endTime: string
-  hasLunch: boolean
   clientName?: string
   description?: string
   status: "paid" | "unpaid"

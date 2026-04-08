@@ -3,7 +3,6 @@ interface TimeEntryProps {
   employeeId: string
   startTime: Date
   endTime: Date
-  hasLunch: boolean
   clientName: string
   description: string | null
   status: "paid" | "unpaid"
@@ -16,7 +15,6 @@ export class TimeEntry {
   public readonly employeeId: string
   public startTime: Date
   public endTime: Date
-  public hasLunch: boolean
   public clientName: string
   public description: string | null
   public status: "paid" | "unpaid"
@@ -28,7 +26,6 @@ export class TimeEntry {
     this.employeeId = props.employeeId
     this.startTime = props.startTime
     this.endTime = props.endTime
-    this.hasLunch = props.hasLunch
     this.clientName = props.clientName
     this.description = props.description
     this.status = props.status
@@ -61,15 +58,5 @@ export class TimeEntry {
     this.startTime = start
     this.endTime = end
     this.validate()
-  }
-
-  getWorkedDurationInHours(): number {
-    const durationInMs = this.endTime.getTime() - this.startTime.getTime()
-    return durationInMs / (1000 * 60 * 60)
-  }
-
-  getPaidDurationInHours(): number {
-    const lunchBreakInHours = this.hasLunch ? 0.5 : 0
-    return Math.max(0, this.getWorkedDurationInHours() - lunchBreakInHours)
   }
 }

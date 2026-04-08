@@ -139,14 +139,13 @@ export class EmployeesController {
   @Post(":id/time-entries")
   async registerTime(
     @Param("id") id: string,
-    @Body() body: { date: string; startTime: string; endTime: string; hasLunch?: boolean; clientName: string; description?: string }
+    @Body() body: { date: string; startTime: string; endTime: string; clientName: string; description?: string }
   ): Promise<TimeEntryResponseDto> {
     const result = await this.registerTimeEntry.execute({
       employeeId: id,
       date: body.date,
       startTime: body.startTime,
       endTime: body.endTime,
-      hasLunch: body.hasLunch,
       clientName: body.clientName,
       description: body.description,
     });
@@ -169,14 +168,13 @@ export class EmployeesController {
   @Patch("time-entries/:id")
   async updateTimeEntry(
     @Param("id") id: string,
-    @Body() body: { date: string; startTime: string; endTime: string; hasLunch?: boolean; description?: string }
+    @Body() body: { date: string; startTime: string; endTime: string; description?: string }
   ): Promise<TimeEntryResponseDto> {
     await this.updateTimeEntryUseCase.execute({
       id,
       date: body.date,
       startTime: body.startTime,
       endTime: body.endTime,
-      hasLunch: body.hasLunch,
       description: body.description,
     });
 
@@ -228,7 +226,6 @@ export class EmployeesController {
       employeeId: entry.employeeId,
       startTime: entry.startTime.toISOString(),
       endTime: entry.endTime.toISOString(),
-      hasLunch: entry.hasLunch,
       clientName: entry.clientName ?? undefined,
       description: entry.description ?? undefined,
       status: entry.status,

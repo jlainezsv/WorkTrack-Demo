@@ -71,7 +71,6 @@ export const timeEntries = pgTable(
 
     startTime: timestamp("start_time", { withTimezone: true }).notNull(),
     endTime: timestamp("end_time", { withTimezone: true }).notNull(),
-    hasLunch: boolean("has_lunch").notNull().default(false),
 
     clientName: text("client_name").notNull(),
     description: text("description"),

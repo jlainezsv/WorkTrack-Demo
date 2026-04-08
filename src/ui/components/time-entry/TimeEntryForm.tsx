@@ -17,14 +17,6 @@ import { NativeTimeField } from "@/ui/components/time-entry/NativeTimeField"
 import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 
-import { Checkbox } from "@/ui/components/ui/checkbox"
-import {
-  FieldContent,
-  FieldDescription,
-  FieldGroup,
-  FieldTitle,
-} from "@/ui/components/ui/field"
-
 const registerTimeEntry = new RegisterTimeEntry(
   sharedTimeEntryRepository,
   sharedEmployeeRepository
@@ -52,7 +44,6 @@ export function TimeEntryForm({ fixedEmployeeId, onCreated, submitLabel = "Regis
   const [date, setDate] = useState("")
   const [startTime, setStartTime] = useState("")
   const [endTime, setEndTime] = useState("")
-  const [hasLunch, setHasLunch] = useState(false)
   const [clientName, setClientName] = useState("")
   const [description, setDescription] = useState("")
   const [employees, setEmployees] = useState<EmployeeOption[]>([])
@@ -84,7 +75,6 @@ export function TimeEntryForm({ fixedEmployeeId, onCreated, submitLabel = "Regis
     setDate("")
     setStartTime("")
     setEndTime("")
-    setHasLunch(false)
     setClientName("")
     setDescription("")
   }
@@ -111,7 +101,6 @@ export function TimeEntryForm({ fixedEmployeeId, onCreated, submitLabel = "Regis
         date,
         startTime,
         endTime,
-        hasLunch,
         clientName: clientName || undefined,
         description: description || undefined,
       })
@@ -199,19 +188,7 @@ export function TimeEntryForm({ fixedEmployeeId, onCreated, submitLabel = "Regis
           required
         />
       </div>
-      <FieldGroup>
-        <FieldLabel>
-        <Field orientation="horizontal">
-          <Checkbox id="toggle-checkbox-2" name="toggle-checkbox-2" checked={hasLunch} onCheckedChange={(v) => setHasLunch(v === true)} />
-          <FieldContent>
-            <FieldTitle>Apply Lunch Break</FieldTitle>
-            <FieldDescription>
-              Subtract 30 minutes from paid time.
-            </FieldDescription>
-          </FieldContent>
-        </Field>
-      </FieldLabel>
-      </FieldGroup>
+      
 
       <Field>
         <FieldLabel>Client</FieldLabel>

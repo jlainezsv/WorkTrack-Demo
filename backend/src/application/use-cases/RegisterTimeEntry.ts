@@ -12,7 +12,6 @@ interface RegisterTimeEntryInput {
   date: string;       // "2026-03-29"
   startTime: string;  // "22:00"
   endTime: string;    // "06:00"
-  hasLunch?: boolean;
   clientName: string;
   description?: string | null;
 }
@@ -49,7 +48,6 @@ export class RegisterTimeEntry {
       employeeId: input.employeeId,
       startTime: startDateTime,
       endTime: endDateTime,
-      hasLunch: input.hasLunch ?? false,
       clientName: input.clientName,
       description: input.description ?? null,
       status: "unpaid",

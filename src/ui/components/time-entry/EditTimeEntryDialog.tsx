@@ -9,8 +9,6 @@ import { Button } from "@/ui/components/ui/button"
 import { Input } from "@/ui/components/ui/input"
 import { Textarea } from "@/ui/components/ui/textarea"
 import { NativeTimeField } from "@/ui/components/time-entry/NativeTimeField"
-import { Checkbox } from "@/ui/components/ui/checkbox"
-import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldTitle } from "@/ui/components/ui/field"
 
 const updateTimeEntry = new UpdateTimeEntry(sharedTimeEntryRepository)
 
@@ -25,7 +23,6 @@ export function EditTimeEntryDialog({ entry, open, onOpenChange, onUpdated }: Pr
   const [date, setDate] = useState("")
   const [startTime, setStartTime] = useState("")
   const [endTime, setEndTime] = useState("")
-  const [hasLunch, setHasLunch] = useState(false)
   const [notes, setNotes] = useState("")
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -40,7 +37,6 @@ export function EditTimeEntryDialog({ entry, open, onOpenChange, onUpdated }: Pr
     setDate(`${start.getFullYear()}-${pad(start.getMonth() + 1)}-${pad(start.getDate())}`)
     setStartTime(`${pad(start.getHours())}:${pad(start.getMinutes())}`)
     setEndTime(`${pad(end.getHours())}:${pad(end.getMinutes())}`)
-    setHasLunch(entry.hasLunch)
     setNotes(entry.description ?? "")
     setError(null)
   }, [entry, open])
@@ -71,7 +67,6 @@ export function EditTimeEntryDialog({ entry, open, onOpenChange, onUpdated }: Pr
           date,
           startTime,
           endTime,
-          hasLunch,
           description: notes || undefined,
         },
         entry,
@@ -132,18 +127,6 @@ export function EditTimeEntryDialog({ entry, open, onOpenChange, onUpdated }: Pr
                 required
               />
             </div>
-
-            <FieldGroup>
-              <FieldLabel>
-              <Field orientation="horizontal">
-                <Checkbox id="edit-lunch-checkbox" name="edit-lunch-checkbox" checked={hasLunch} onCheckedChange={(v) => setHasLunch(v === true)} />
-                <FieldContent>
-                  <FieldTitle>Apply Lunch Break</FieldTitle>
-                  <FieldDescription>Subtract 30 minutes from paid time.</FieldDescription>
-                </FieldContent>
-              </Field>
-              </FieldLabel>
-            </FieldGroup>
 
             <div>
               <label className="block text-sm font-medium mb-1">Notes</label>
