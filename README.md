@@ -421,32 +421,6 @@ Backend runs at:
 ```
 http://localhost:4000
 ```
-
----
-
-# Environment Variables
-
-Frontend `.env`
-
-```
-VITE_API_URL=http://localhost:4000
-```
-
-Production:
-
-```
-VITE_API_URL=https://wt-prod.up.railway.app
-```
-
----
-
-Backend `.env`
-
-```
-DATABASE_URL=postgresql://user:password@localhost:5432/worktrack
-NODE_ENV=development
-```
-
 ---
 
 # Documentation
