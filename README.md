@@ -17,10 +17,7 @@ WorkTrack is intended to evolve into a **usable V1 for real-world testing** whil
 # Live Demo
 
 Frontend
-https://work-track-azure.vercel.app
-
-Backend API
-https://wt-prod.up.railway.app
+[https://work-track-azure.vercel.app](https://work-track-demo-nu.vercel.app/)
 
 ---
 
